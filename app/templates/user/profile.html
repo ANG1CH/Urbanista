@@ -1,0 +1,107 @@
+{% extends 'main/base.html' %}
+
+{% block style %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
+
+{% block title %}Профиль{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+    <div class="container">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <h1 class="profile-name">{{ current_user.name }}</h1>
+            <div class="profile-info">
+                <div class="info-item">
+                    <i class="fas fa-user-circle"></i>
+                    <p>Логин: {{ current_user.login }}</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <p>Дата регистрации: {{ current_user.date.strftime('%d.%m.%Y') }}</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-user-tag"></i>
+                    <p>Роль: {{ current_user.role }}</p>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="{{ url_for('user.update_profile') }}" class="btn btn-custom">
+                    <i class="fas fa-edit me-2"></i>Редактировать профиль
+                </a>
+            </div>
+        </div>
+
+        <div class="mb-4">
+            <h2 class="section-title">Мои товары</h2>
+            {% if current_user.posts %}
+                <div class="content-grid">
+                    {% for post in current_user.posts %}
+                        <div class="content-card">
+                            {% if post.picture %}
+                                <img src="{{ url_for('static', filename='upload/' + post.picture) }}" alt="{{ post.name }}">
+                            {% else %}
+                                <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                    <i class="fas fa-image text-muted" style="font-size: 3rem;"></i>
+                                </div>
+                            {% endif %}
+                            <div class="card-content">
+                                <h3 class="card-title">{{ post.name }}</h3>
+                                <p class="card-text">{{ post.price }} ₽</p>
+                                <a href="{{ url_for('post.item_card', product_id=post.id) }}" class="btn btn-custom">
+                                    <i class="fas fa-info-circle me-2"></i>Подробнее
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-box-open"></i>
+                    <p>У вас пока нет товаров</p>
+                </div>
+            {% endif %}
+        </div>
+
+        <div>
+            <h2 class="section-title">Мои блоги</h2>
+            {% if current_user.blogs %}
+                <div class="content-grid">
+                    {% for blog in current_user.blogs %}
+                        <div class="content-card">
+                            {% if blog.picture %}
+                                <img src="{{ url_for('static', filename='upload/' + blog.picture) }}" alt="{{ blog.name }}">
+                            {% else %}
+                                <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                    <i class="fas fa-image text-muted" style="font-size: 3rem;"></i>
+                                </div>
+                            {% endif %}
+                            <div class="card-content">
+                                <h3 class="card-title">{{ blog.name }}</h3>
+                                <p class="card-text">{{ blog.text[:100]|safe }}...</p>
+                                <a href="{{ url_for('blog.full_blog', blog_id=blog.id) }}" class="btn btn-custom">
+                                    <i class="fas fa-book-reader me-2"></i>Читать
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-book"></i>
+                    <p>У вас пока нет блогов</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,16 @@
+.data-table {
+    overflow: hidden;
+}
+.table thead th {
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+.table-hover tbody tr:hover {
+    background-color: rgba(0,0,0,0.03);
+}
+.product-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+}

@@ -1,0 +1,52 @@
+<div class="container">
+  <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+    <div class="col-md-3 mb-2 mb-md-0">
+      <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+        <img class="header__img" src="/static/img/logo-header-black.png" alt="logo">
+      </a>
+    </div>
+
+    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+      <li><a href="{{ url_for('main.index') }}" class="nav-link px-2 link-body-emphasis"><h6>Главная</h6></a></li>
+      <li><a href="{{ url_for('post.all') }}" class="nav-link px-2 link-body-emphasis"><h6>Все товары</h6></a></li>
+      <li><a href="{{ url_for('blog.all') }}" class="nav-link px-2 link-body-emphasis"><h6>Блог</h6></a></li>
+      <li><a href="{{ url_for('main.about') }}" class="nav-link px-2 link-body-emphasis"><h6>О нас</h6></a></li>
+
+      {% if current_user.is_authenticated and current_user.role == 'seller' or current_user.role == 'admin' %}
+      <li><a href="{{ url_for('post.create') }}" class="nav-link px-2 link-body-emphasis"><h6>Добавить товар</h6></a></li>
+      {% endif %}
+      
+      {% if current_user.is_authenticated and current_user.role == 'author' or current_user.role == 'admin' %}
+      <li><a href="{{ url_for('blog.create') }}" class="nav-link px-2 link-body-emphasis"><h6>Добавить блог</h6></a></li>
+      {% endif %}
+    </ul>
+
+    <ul class="nav col-md-3 d-flex justify-content-end">
+      {% if current_user.is_authenticated %}
+        <div class="dropdown text-end me-3">
+          <a href="{{ url_for('cart.view_cart') }}" class="d-block link-body-emphasis text-decoration-none">
+            <i class="fas fa-shopping-cart"></i>
+          </a>
+        </div>
+        <div class="dropdown text-end">
+          <a href="#" class="d-block link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fas fa-user"></i>
+          </a>
+          <ul class="dropdown-menu text-small">
+            <li><a class="dropdown-item" href="{{ url_for('user.profile') }}"><h6>Профиль</h6></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{ url_for('favorite.favorites') }}"><h6>Избранное</h6></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{ url_for('cart.view_cart') }}"><h6>Корзина</h6></a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a href="{{ url_for('user.logout') }}" class="dropdown-item"><h6>Выйти</h6></a></li>
+          </ul>
+        </div>
+
+      {% else %}
+        <li><a href="{{ url_for('user.login') }}" class="nav-link px-2 link-body-emphasis"><h6>Войти</h6></a></li>
+        <li><a href="{{ url_for('user.register') }}" class="nav-link px-2 link-body-emphasis"><h6>Зарегистрироваться</h6></a></li>
+      {% endif %}
+    </ul>
+  </header>
+</div>

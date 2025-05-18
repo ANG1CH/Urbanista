@@ -1,0 +1,58 @@
+<div class="container">
+    <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
+      <div class="col mb-3">
+        <a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
+            <img class="header__img" src="/static/img/logo-header-black.png" alt="logo">
+        </a>
+        <p class="text-body-secondary"><h6>© 2025</h6></p>
+      </div>
+  
+      <div class="col mb-3">
+        <h5>Покупателю</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="{{ url_for('main.index') }}" class="nav-link p-0 text-body-secondary"><h6>Главная</h6></a></li>
+          <li class="nav-item mb-2"><a href="{{ url_for('post.all') }}" class="nav-link p-0 text-body-secondary"><h6>Все товары</h6></a></li>
+          <li class="nav-item mb-2"><a href="{{ url_for('blog.all') }}" class="nav-link p-0 text-body-secondary"><h6>Блог</h6></a></li>
+          <li class="nav-item mb-2"><a href="{{ url_for('main.about') }}" class="nav-link p-0 text-body-secondary"><h6>О нас</h6></a></li>
+        </ul>
+      </div>
+
+      {% if current_user.is_authenticated and current_user.role == 'seller' or current_user.role == 'admin' %}
+      <div class="col mb-3">
+        <h5>Продавцу</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="{{ url_for('post.create') }}" class="nav-link p-0 text-body-secondary"><h6>Добавить товар</h6></a></li>
+        </ul>
+      </div>
+      {% endif %}
+
+      {% if current_user.is_authenticated and current_user.role == 'author' or current_user.role == 'admin' %}
+      <div class="col mb-3">
+        <h5>Автору</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="{{ url_for('blog.create') }}" class="nav-link p-0 text-body-secondary"><h6>Добавить блог</h6></a></li>
+        </ul>
+      </div>
+      {% endif %}
+
+      {% if current_user.is_authenticated and current_user.role == 'admin' %}
+      <div class="col mb-3">
+        <h5>Администратору</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="{{ url_for('admin.admin_blogs') }}" class="nav-link p-0 text-body-secondary"><h6>Управление блогами</h6></a></li>
+          <li class="nav-item mb-2"><a href="{{ url_for('admin.admin_users') }}" class="nav-link p-0 text-body-secondary"><h6>Управление пользователями</h6></a></li>
+          <li class="nav-item mb-2"><a href="{{ url_for('admin.admin_posts') }}" class="nav-link p-0 text-body-secondary"><h6>Управление товарами</h6></a></li>
+        </ul>
+      </div>
+      {% endif %}
+  
+      <div class="col mb-3">
+        <h5>Помощь</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="{{ url_for('main.about') }}" class="nav-link p-0 text-body-secondary"><h6>Контакты</h6></a></li>
+          <li class="nav-item mb-2"><a href="{{ url_for('main.terms_of_use') }}" class="nav-link p-0 text-body-secondary"><h6>Условия использования</h6></a></li>
+          <li class="nav-item mb-2"><a href="{{ url_for('main.privacy_policy') }}" class="nav-link p-0 text-body-secondary"><h6>Политика конфиденциальности</h6></a></li>
+        </ul>
+      </div>
+    </footer>
+</div>

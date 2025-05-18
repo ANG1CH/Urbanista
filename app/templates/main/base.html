@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, minimum-scale=0.5">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block style %}{% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
+</head>
+<body>
+
+<header class="header">{% include 'main/_header.html' %}</header>
+{% block script %}{% endblock %}
+<div class="page">
+    <main class="content">
+        {% include 'main/_flash.html' %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer>{% include 'main/_footer.html' %}</footer>
+</div>
+</body>
+</html>

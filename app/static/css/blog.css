@@ -1,0 +1,43 @@
+.article-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 12px !important;
+    overflow: hidden;
+    background: #ffffff;
+}
+
+.shadow-hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.shadow-hover:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+                0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}
+
+.read-more {
+    color: #4f46e5;
+    transition: color 0.3s ease;
+}
+
+.read-more:hover {
+    color: #3730a3;
+}
+
+.object-fit-cover {
+    object-fit: cover;
+    object-position: center;
+}
+
+.blog-image-container {
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.blog-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}

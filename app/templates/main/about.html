@@ -1,0 +1,88 @@
+{% extends 'main/base.html' %}
+
+{% block style %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block title %}О нас{% endblock %}
+
+{% block content %}
+<section class="about-section py-5">
+    <div class="container">
+        <h1 class="text-center mb-4">О нас</h1>
+        <div class="row align-items-center mb-5">
+            <div class="col-md-6">
+                <img src="{{ url_for('static', filename='img/about-us.png') }}" alt="О нас" class="img-fluid rounded shadow">
+            </div>
+            <div class="col-md-6">
+                <h2 class="mb-3">Добро пожаловать в Urbanista</h2>
+                <p class="text-muted">Мы предлагаем широкий ассортимент современной уличной одежды для мужчин, женщин и детей. В нашем магазине вы найдёте футболки, худи, куртки, брюки, обувь и аксессуары от известных брендов, таких как Supreme, Off-White, Nike, Adidas и других.</p>
+                <p class="text-muted">Мы постоянно обновляем наш ассортимент в соответствии с последними трендами уличной моды, чтобы наши клиенты всегда были в курсе новинок и могли выбрать самые актуальные модели.</p>
+            </div>
+        </div>
+        <div class="row text-center mb-5">
+            <div class="col-md-4 mb-4">
+                <div class="icon-box p-4 shadow rounded">
+                    <i class="fas fa-truck fa-3x mb-3"></i>
+                    <h5>Быстрая доставка</h5>
+                    <p class="text-muted">Мы обеспечиваем быструю и надёжную доставку по всей стране.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="icon-box p-4 shadow rounded">
+                    <i class="fas fa-tags fa-3x mb-3"></i>
+                    <h5>Выгодные цены</h5>
+                    <p class="text-muted">Регулярные распродажи и акции позволяют приобрести качественную одежду по доступным ценам.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="icon-box p-4 shadow rounded">
+                    <i class="fas fa-check-circle fa-3x mb-3"></i>
+                    <h5>Высокое качество</h5>
+                    <p class="text-muted">Мы гарантируем высокое качество всех наших товаров, чтобы вы оставались довольны покупками.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center mb-4">Наше местоположение</h2>
+                <div class="map-container shadow rounded">
+                    <iframe src="https://yandex.ru/map-widget/v1/?um=constructor%3Aa5ba3d6b4bc58b9a4496c5f779f486bb1bfbfd96c2e9a6c7f9872a3898309ce2&amp;source=constructor" width="100%" height="410" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-12">
+                <h2 class="text-center mb-4">Контактные данные</h2>
+                <div class="contact-details text-center">
+                    <p><strong>Телефон:</strong> +7 (921) 534-84-49</p>
+                    <p><strong>Telegram:</strong> @anton_angich</p>
+                    <p><strong>Адрес:</strong> г. Череповец, пр. Победы, д. 10</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .icon-box i {
+        color: black;
+        transition: color 0.3s ease;
+    }
+
+    .icon-box i:hover {
+        color: gray;
+    }
+
+    .map-container {
+        overflow: hidden;
+        border-radius: 10px;
+    }
+</style>
+{% endblock %}

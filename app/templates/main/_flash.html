@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" id="flash-message">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <script>
+            function hideMessage() {
+            const messageElement = document.getElementById('flash-message');
+            if (messageElement) {
+                setTimeout(() => {
+                    messageElement.classList.add('fade-out');
+                    setTimeout(() => {
+                        messageElement.remove();
+                    }, 200);
+                }, 5000);
+            }
+        }
+        
+        window.onload = hideMessage;
+    </script>
+
+</body>
+</html>

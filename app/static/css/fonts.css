@@ -1,0 +1,15 @@
+/* FONT SourceSerifPro */
+@font-face {
+    font-family: 'CenturySchoolbook';
+    font-style: normal;
+    font-weight: 400;
+    src: url('../fonts/SourceSerifPro/SourceSerifPro-Regular.ttf');
+}
+
+
+@font-face {
+    font-family: 'CenturySchoolbook';
+    font-style: normal;
+    font-weight: 600;
+    src: url('../fonts/SourceSerifPro/SourceSerifPro-Semibold.ttf');
+}

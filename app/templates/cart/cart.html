@@ -1,0 +1,102 @@
+{% extends 'main/base.html' %}
+
+{% block style %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cards.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}?v=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block title %}Корзина{% endblock %}
+
+{% block content %}
+<div class="cart-container">
+    <div class="container">
+        <h1 class="cart-title">Корзина</h1>
+        
+        {% if cart_items %}
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="cart-items">
+                        {% for item in cart_items %}
+                            <div class="cart-item">
+                                <div class="cart-item-image">
+                                    <img src="{{ url_for('static', filename='upload/' + item.post.picture) }}" alt="{{ item.post.name }}">
+                                </div>
+                                <div class="cart-item-details">
+                                    <h3>{{ item.post.name }}</h3>
+                                    <p class="cart-item-price">₽ {{ item.post.price }}</p>
+                                    <div class="cart-item-quantity">
+                                        <form action="{{ url_for('cart.update_quantity', item_id=item.id) }}" method="POST" class="quantity-form">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <button type="submit" name="action" value="decrease" class="quantity-btn">-</button>
+                                            <span class="quantity">{{ item.quantity }}</span>
+                                            <button type="submit" name="action" value="increase" class="quantity-btn">+</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="cart-item-actions">
+                                    <form action="{{ url_for('cart.remove_from_cart', item_id=item.id) }}" method="POST" class="d-inline">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <button type="submit" class="remove-btn">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                <div class="col-lg-4">
+                    <div class="cart-summary">
+                        <h2>Итого</h2>
+                        <div class="summary-item">
+                            <span>Товары ({{ total_items }})</span>
+                            <span>₽ {{ total_price }}</span>
+                        </div>
+                        <div class="summary-item">
+                            <span>Доставка</span>
+                            <span>Бесплатно</span>
+                        </div>
+                        <div class="summary-total">
+                            <span>Общая сумма</span>
+                            <span>₽ {{ total_price }}</span>
+                        </div>
+                        {% if discounted_price is not none %}
+                        <div class="summary-total">
+                            <span>Сумма со скидкой</span>
+                            <span>₽ {{ discounted_price }}</span>
+                        </div>
+                        <div class="summary-separator"></div>
+                        {% endif %}
+                        <div class="summary-item promo-code">
+                            <form method="POST" action="{{ url_for('cart.apply_promo') }}" class="d-flex align-items-center">
+                                {{ form.hidden_tag() }}
+                                {{ form.code(class="form-control me-2 promo-input", placeholder="Промокод") }}
+                                <button type="submit" class="btn-custom checkout-btn promo-btn">Применить</button>
+                            </form>
+                        </div>
+                        <form action="{{ url_for('cart.checkout') }}" method="POST" class="d-inline">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn-custom checkout-btn">Оформить заказ</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="empty-cart">
+                <i class="fas fa-shopping-cart"></i>
+                <h2>Ваша корзина пуста</h2>
+                <p>Добавьте товары в корзину, чтобы продолжить покупки</p>
+                <a href="{{ url_for('post.all') }}" class="btn-custom">Перейти к товарам</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+<div class="products-container row">
+    {% if posts %}
+        {% for post in posts %}
+            <div class="product-wrap col-md-4 col-sm-6 mb-3">
+                <div class="product-item">
+                    <img src="{{ url_for('static', filename='upload/' + post.picture) }}" alt="product_picture">
+                    <div class="product-buttons">
+                        <a type="button" class="button" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token() }}">
+                            В корзину
+                        </a>
+                        {% if current_user.is_authenticated and post.seller.id == current_user.id or current_user.role == 'admin' %}
+                            <a href="{{ url_for('post.update', product_id=post.id) }}" class="button-edt">Редактировать</a>
+                            <a href="{{ url_for('post.delete', product_id=post.id) }}" class="button-del">Удалить</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="product-title">
+                    <a href="{{ url_for('post.item_card', product_id=post.id) }}">{{ post.name }}</a>
+                    <span class="product-price">₽ {{ post.price }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h6>Нет товаров</h6>
+    {% endif %}
+</div>
+<script>
+    document.querySelectorAll('.button').forEach(button => {
+        button.addEventListener('click', async () => {
+            const postId = button.getAttribute('data-post-id');
+            const csrfToken = button.getAttribute('data-csrf-token');
+
+            try {
+                const response = await fetch(`/cart/add/${postId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({})
+                });
+
+                if (response.ok) {
+                    console.log('Flash message: Товар добавлен в корзину');
+                } else {
+                    console.log('Flash message: Ошибка при добавлении товара в корзину');
+                }
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        });
+    });
+
+    function addFlashMessage(message, category) {
+        const flashContainer = document.createElement('div');
+        flashContainer.className = `alert alert-${category}`;
+        flashContainer.textContent = message;
+        document.body.appendChild(flashContainer);
+
+        setTimeout(() => {
+            flashContainer.classList.add('fade-out');
+            setTimeout(() => {
+                flashContainer.remove();
+            }, 200);
+        }, 5000);
+    }
+</script>

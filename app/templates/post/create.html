@@ -1,0 +1,163 @@
+{% extends 'main/base.html' %}
+
+{% block style %}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+{% endblock %}
+
+{% block script %}
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.1.0/classic/translations/ru.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let descriptionEditor;
+            let featuresEditor;
+
+            ClassicEditor
+                .create(document.querySelector('#description'), {
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'bold',
+                            'italic',
+                            'link',
+                            'bulletedList',
+                            'numberedList',
+                            '|',
+                            'outdent',
+                            'indent',
+                            '|',
+                            'blockQuote',
+                            'insertTable',
+                            'undo',
+                            'redo'
+                        ]
+                    },
+                    language: 'ru',
+                    table: {
+                        contentToolbar: [
+                            'tableColumn',
+                            'tableRow',
+                            'mergeTableCells'
+                        ]
+                    }
+                })
+                .then(editor => {
+                    descriptionEditor = editor;
+
+                    const form = document.querySelector('form');
+                    const submitButton = document.querySelector('#submitButton');
+
+                    submitButton.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const editorData = descriptionEditor.getData();
+                        document.querySelector('#hiddenDescription').value = editorData;
+                        form.submit();
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+
+            ClassicEditor
+                .create(document.querySelector('#features'), {
+                    toolbar: {
+                        items: [
+                            'heading',
+                            '|',
+                            'bold',
+                            'italic',
+                            'link',
+                            'bulletedList',
+                            'numberedList',
+                            '|',
+                            'outdent',
+                            'indent',
+                            '|',
+                            'blockQuote',
+                            'insertTable',
+                            'undo',
+                            'redo'
+                        ]
+                    },
+                    language: 'ru',
+                    table: {
+                        contentToolbar: [
+                            'tableColumn',
+                            'tableRow',
+                            'mergeTableCells'
+                        ]
+                    }
+                })
+                .then(editor => {
+                    featuresEditor = editor;
+
+                    const form = document.querySelector('form');
+                    const submitButton = document.querySelector('#submitButton');
+
+                    submitButton.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const editorData = featuresEditor.getData();
+                        document.querySelector('#hiddenFeatures').value = editorData;
+                        form.submit();
+                    });
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+    </script>
+
+{% endblock %}
+
+{% block title %}Добавление товара{% endblock %}
+
+{% block content %}
+<form method="POST" enctype="multipart/form-data" action="{{ url_for('post.create') }}">
+    {{ form.hidden_tag() }}
+    
+    <img class="header__img" src="/static/img/logo-header-black.png" alt="logo">
+    <h1 class="h3 mb-3 fw-normal">Добавьте карточку товара</h1>
+    
+    <div class="form-floating mb-2">
+        <input name="name" type="text" placeholder="Название товара" class="form-control">
+        <label for="name"><h6>Название товара</h6></label>
+    </div>
+
+    <div class="form-floating mb-2">
+        <input name="section" type="text" placeholder="Раздел" class="form-control">
+        <label for="section"><h6>Раздел (худи, свитшоты, кроссовки и т.д.)</h6></label>
+    </div>
+
+    <div class="form-floating mb-2">
+        <input name="picture" type="file" accept="image/*" class="form-control">
+        <label for="picture"><h6>Изображение товара (соотношение сторон 1:1)</h6></label>
+    </div>
+
+    <div class="form-floating mb-2">
+        <textarea id="description" name="description" rows="5" placeholder="Описание товара" class="form-control"></textarea>
+        <label for="description"></label>
+    </div>
+    <input type="hidden" id="hiddenDescription" name="hiddenDescription">
+
+    <div class="form-floating mb-2">
+        <textarea id="features" name="features" rows="5" placeholder="Характеристики товара" class="form-control"></textarea>
+        <label for="features"></label>
+    </div>
+    <input type="hidden" id="hiddenFeatures" name="hiddenFeatures">
+
+    <div class="form-floating mb-2">
+        <input name="price" type="text" placeholder="Цена товара" class="form-control">
+        <label for="price"><h6>Цена товара</h6></label>
+    </div>
+
+    <div class="form-floating mb-2">
+        <input name="gender" type="text" placeholder="Пол" class="form-control">
+        <label for="gender"><h6>Пол (мужской, женский)</h6></label>
+    </div>
+    
+    <button type="submit" class="btn custom-btn w-100 py-2" id="submitButton">Добавить товар</button>
+
+</form>
+{% endblock %}
