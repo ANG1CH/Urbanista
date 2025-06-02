@@ -1,34 +1,51 @@
 <div class="container">
-  <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-    <div class="col-md-3 mb-2 mb-md-0">
-      <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
+  {# Мобильный хэдер #}
+  <div class="header-mobile-wrapper">
+    <button class="burger" id="burger-menu" aria-label="Открыть меню"><span></span></button>
+    <a href="/" class="header__img-link">
+      <img class="header__img" src="/static/img/logo-header-black.png" alt="logo">
+    </a>
+    <div class="header-mobile-actions" style="display: flex; align-items: center; gap: 12px;">
+      <a href="{{ url_for('cart.view_cart') }}" class="d-block link-body-emphasis text-decoration-none" aria-label="Корзина">
+        <i class="fas fa-shopping-cart"></i>
+      </a>
+      <a href="#" class="d-block link-body-emphasis text-decoration-none" id="mobile-user-menu" aria-label="Пользователь">
+        <i class="fas fa-user"></i>
+      </a>
+    </div>
+  </div>
+  <div class="header-mobile-divider"></div>
+  <!-- nav.header-mobile-nav удалён, теперь создаётся через JS -->
+  {# Десктопный хэдер #}
+  <div class="header-desktop-wrapper" style="display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 0;">
+    <div style="display: flex; align-items: center; height: 100%; justify-self: start;">
+      <a href="/" class="me-4">
         <img class="header__img" src="/static/img/logo-header-black.png" alt="logo">
       </a>
     </div>
-
-    <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-      <li><a href="{{ url_for('main.index') }}" class="nav-link px-2 link-body-emphasis"><h6>Главная</h6></a></li>
-      <li><a href="{{ url_for('post.all') }}" class="nav-link px-2 link-body-emphasis"><h6>Все товары</h6></a></li>
-      <li><a href="{{ url_for('blog.all') }}" class="nav-link px-2 link-body-emphasis"><h6>Блог</h6></a></li>
-      <li><a href="{{ url_for('main.about') }}" class="nav-link px-2 link-body-emphasis"><h6>О нас</h6></a></li>
-
+    <ul class="nav mb-0" id="main-nav" style="justify-self: center;">
+      <li><a href="{{ url_for('main.index') }}" class="nav-link px-2 link-body-emphasis"><h6 class="mb-0">Главная</h6></a></li>
+      <li><a href="{{ url_for('post.all') }}" class="nav-link px-2 link-body-emphasis"><h6 class="mb-0">Все товары</h6></a></li>
+      <li><a href="{{ url_for('blog.all') }}" class="nav-link px-2 link-body-emphasis"><h6 class="mb-0">Блог</h6></a></li>
+      <li><a href="{{ url_for('main.about') }}" class="nav-link px-2 link-body-emphasis"><h6 class="mb-0">О нас</h6></a></li>
       {% if current_user.is_authenticated and current_user.role == 'seller' or current_user.role == 'admin' %}
-      <li><a href="{{ url_for('post.create') }}" class="nav-link px-2 link-body-emphasis"><h6>Добавить товар</h6></a></li>
+      <li><a href="{{ url_for('post.create') }}" class="nav-link px-2 link-body-emphasis"><h6 class="mb-0">Добавить товар</h6></a></li>
       {% endif %}
-      
       {% if current_user.is_authenticated and current_user.role == 'author' or current_user.role == 'admin' %}
-      <li><a href="{{ url_for('blog.create') }}" class="nav-link px-2 link-body-emphasis"><h6>Добавить блог</h6></a></li>
+      <li><a href="{{ url_for('blog.create') }}" class="nav-link px-2 link-body-emphasis"><h6 class="mb-0">Добавить блог</h6></a></li>
+      {% endif %}
+      {% if current_user.is_authenticated and current_user.role == 'admin' %}
+      <li><a href="{{ url_for('admin.add_promo') }}" class="nav-link px-2 link-body-emphasis"><h6 class="mb-0">Добавить промокод</h6></a></li>
       {% endif %}
     </ul>
-
-    <ul class="nav col-md-3 d-flex justify-content-end">
+    <ul class="nav mb-0" id="user-nav" style="justify-self: end;">
       {% if current_user.is_authenticated %}
-        <div class="dropdown text-end me-3">
+        <li class="me-4">
           <a href="{{ url_for('cart.view_cart') }}" class="d-block link-body-emphasis text-decoration-none">
             <i class="fas fa-shopping-cart"></i>
           </a>
-        </div>
-        <div class="dropdown text-end">
+        </li>
+        <div class="dropdown text-end me-3">
           <a href="#" class="d-block link-body-emphasis text-decoration-none" data-bs-toggle="dropdown" aria-expanded="false">
             <i class="fas fa-user"></i>
           </a>
@@ -42,11 +59,375 @@
             <li><a href="{{ url_for('user.logout') }}" class="dropdown-item"><h6>Выйти</h6></a></li>
           </ul>
         </div>
-
       {% else %}
         <li><a href="{{ url_for('user.login') }}" class="nav-link px-2 link-body-emphasis"><h6>Войти</h6></a></li>
         <li><a href="{{ url_for('user.register') }}" class="nav-link px-2 link-body-emphasis"><h6>Зарегистрироваться</h6></a></li>
       {% endif %}
     </ul>
-  </header>
+  </div>
+  <div class="header-divider" style="margin-top: 12px;"></div>
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const burger = document.getElementById('burger-menu');
+    const userMenuBtn = document.getElementById('mobile-user-menu');
+    let userMenuDropdown = document.getElementById('mobile-user-dropdown');
+    let mobileNav = null;
+    const headerMobileWrapper = document.querySelector('.header-mobile-wrapper');
+    // Каталог-бургер для мобильного
+    const catalogBurger = document.getElementById('catalog-burger');
+    let mobileCatalog = null;
+    const sidebarDesktop = document.getElementById('sidebar-desktop');
+
+    function createMobileNav() {
+      if (!mobileNav) {
+        mobileNav = document.createElement('div');
+        mobileNav.className = 'header-mobile-nav';
+        mobileNav.innerHTML = `
+          <ul>
+            <li><a href="{{ url_for('main.index') }}">Главная</a></li>
+            <li><a href="{{ url_for('post.all') }}">Все товары</a></li>
+            <li><a href="{{ url_for('blog.all') }}">Блог</a></li>
+            <li><a href="{{ url_for('main.about') }}">О нас</a></li>
+            {% if current_user.is_authenticated and current_user.role == 'seller' or current_user.role == 'admin' %}
+            <li><a href="{{ url_for('post.create') }}">Добавить товар</a></li>
+            {% endif %}
+            {% if current_user.is_authenticated and current_user.role == 'author' or current_user.role == 'admin' %}
+            <li><a href="{{ url_for('blog.create') }}">Добавить блог</a></li>
+            {% endif %}
+            {% if current_user.is_authenticated and current_user.role == 'admin' %}
+            <li><a href="{{ url_for('admin.add_promo') }}">Добавить промокод</a></li>
+            {% endif %}
+            {% if current_user.is_authenticated %}
+              <li><a href="{{ url_for('cart.view_cart') }}">Корзина</a></li>
+              <li><a href="{{ url_for('favorite.favorites') }}">Избранное</a></li>
+              <li><a href="{{ url_for('user.profile') }}">Профиль</a></li>
+              <li><a href="{{ url_for('user.logout') }}">Выйти</a></li>
+            {% else %}
+              <li><a href="{{ url_for('user.login') }}">Войти</a></li>
+              <li><a href="{{ url_for('user.register') }}">Зарегистрироваться</a></li>
+            {% endif %}
+          </ul>
+        `;
+        document.body.appendChild(mobileNav);
+        // Позиционируем меню строго под .header-mobile-wrapper
+        const rect = headerMobileWrapper.getBoundingClientRect();
+        mobileNav.style.position = 'absolute';
+        mobileNav.style.left = rect.left + window.scrollX + 'px';
+        mobileNav.style.top = (rect.bottom + window.scrollY) + 'px';
+        mobileNav.style.width = rect.width + 'px';
+        mobileNav.style.zIndex = 150;
+      }
+    }
+    if (burger) {
+      burger.addEventListener('click', function(e) {
+        e.preventDefault();
+        createMobileNav();
+        mobileNav.classList.toggle('open');
+        burger.classList.toggle('open');
+        if (userMenuDropdown) userMenuDropdown.classList.remove('open');
+        // Перепозиционируем при каждом открытии
+        const rect = headerMobileWrapper.getBoundingClientRect();
+        mobileNav.style.left = rect.left + window.scrollX + 'px';
+        mobileNav.style.top = (rect.bottom + window.scrollY) + 'px';
+        mobileNav.style.width = rect.width + 'px';
+      });
+      window.addEventListener('resize', function() {
+        if (mobileNav) {
+          const rect = headerMobileWrapper.getBoundingClientRect();
+          mobileNav.style.left = rect.left + window.scrollX + 'px';
+          mobileNav.style.top = (rect.bottom + window.scrollY) + 'px';
+          mobileNav.style.width = rect.width + 'px';
+        }
+        if(window.innerWidth > 576 && mobileNav) {
+          mobileNav.classList.remove('open');
+          burger.classList.remove('open');
+          if (userMenuDropdown) userMenuDropdown.classList.remove('open');
+        }
+      });
+      document.addEventListener('click', function(e) {
+        if (mobileNav && mobileNav.classList.contains('open') && !mobileNav.contains(e.target) && e.target !== burger) {
+          mobileNav.classList.remove('open');
+          burger.classList.remove('open');
+        }
+      });
+      document.addEventListener('click', function(e) {
+        if (mobileNav && mobileNav.classList.contains('open') && e.target.tagName === 'A' && mobileNav.contains(e.target)) {
+          mobileNav.classList.remove('open');
+          burger.classList.remove('open');
+        }
+      });
+    }
+    function createMobileCatalog() {
+      if (!mobileCatalog) {
+        mobileCatalog = document.createElement('div');
+        mobileCatalog.className = 'mobile-catalog-nav';
+        mobileCatalog.innerHTML = `
+          <ul>
+            <li><a href="{{ url_for('post.all') }}">Все товары</a></li>
+            <li><a href="{{ url_for('post.man_wear') }}">Мужская одежда</a></li>
+            <li><a href="{{ url_for('post.woman_wear') }}">Женская одежда</a></li>
+            <li><a href="{{ url_for('post.bodysuit') }}">Боди</a></li>
+            <li><a href="{{ url_for('post.jeans') }}">Джинсы</a></li>
+            <li><a href="{{ url_for('post.caps') }}">Кепки</a></li>
+            <li><a href="{{ url_for('post.jackets') }}">Куртки</a></li>
+            <li><a href="{{ url_for('post.long_sleeves') }}">Лонгсливы</a></li>
+            <li><a href="{{ url_for('post.socks') }}">Носки</a></li>
+            <li><a href="{{ url_for('post.shoes') }}">Обувь</a></li>
+            <li><a href="{{ url_for('post.shirts') }}">Рубашки</a></li>
+            <li><a href="{{ url_for('post.sweatshirt') }}">Свитшоты</a></li>
+            <li><a href="{{ url_for('post.tops') }}">Топы</a></li>
+            <li><a href="{{ url_for('post.shirts') }}">Футболки</a></li>
+            <li><a href="{{ url_for('post.pants') }}">Штаны</a></li>
+            <li><a href="{{ url_for('post.shorts') }}">Шорты</a></li>
+          </ul>
+        `;
+        document.body.appendChild(mobileCatalog);
+        // Позиционируем строго под кнопкой
+        const rect = catalogBurger.getBoundingClientRect();
+        mobileCatalog.style.position = 'absolute';
+        mobileCatalog.style.left = rect.left + window.scrollX + 'px';
+        mobileCatalog.style.top = (rect.bottom + window.scrollY) + 'px';
+        mobileCatalog.style.width = rect.width + 'px';
+        mobileCatalog.style.zIndex = 151;
+      }
+    }
+    if (catalogBurger) {
+      catalogBurger.addEventListener('click', function(e) {
+        e.preventDefault();
+        createMobileCatalog();
+        mobileCatalog.classList.toggle('open');
+        catalogBurger.classList.toggle('open');
+        // Перепозиционируем при каждом открытии
+        const rect = catalogBurger.getBoundingClientRect();
+        mobileCatalog.style.left = rect.left + window.scrollX + 'px';
+        mobileCatalog.style.top = (rect.bottom + window.scrollY) + 'px';
+        mobileCatalog.style.width = rect.width + 'px';
+      });
+      window.addEventListener('resize', function() {
+        if (mobileCatalog) {
+          const rect = catalogBurger.getBoundingClientRect();
+          mobileCatalog.style.left = rect.left + window.scrollX + 'px';
+          mobileCatalog.style.top = (rect.bottom + window.scrollY) + 'px';
+          mobileCatalog.style.width = rect.width + 'px';
+        }
+        if(window.innerWidth > 576 && mobileCatalog) {
+          mobileCatalog.classList.remove('open');
+          catalogBurger.classList.remove('open');
+        }
+      });
+      document.addEventListener('click', function(e) {
+        if (mobileCatalog && mobileCatalog.classList.contains('open') && !mobileCatalog.contains(e.target) && e.target !== catalogBurger) {
+          mobileCatalog.classList.remove('open');
+          catalogBurger.classList.remove('open');
+        }
+      });
+      document.addEventListener('click', function(e) {
+        if (mobileCatalog && mobileCatalog.classList.contains('open') && e.target.tagName === 'A' && mobileCatalog.contains(e.target)) {
+          mobileCatalog.classList.remove('open');
+          catalogBurger.classList.remove('open');
+        }
+      });
+    }
+    // Открытие/закрытие меню пользователя (мобильная версия)
+    if (userMenuBtn) {
+      userMenuBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (!userMenuDropdown) {
+          userMenuDropdown = document.createElement('div');
+          userMenuDropdown.id = 'mobile-user-dropdown';
+          userMenuDropdown.className = 'mobile-user-dropdown';
+          userMenuDropdown.innerHTML = `
+            <ul>
+              <li><a href="{{ url_for('user.profile') }}">Профиль</a></li>
+              <li><a href="{{ url_for('favorite.favorites') }}">Избранное</a></li>
+              <li><a href="{{ url_for('cart.view_cart') }}">Корзина</a></li>
+              <li><a href="{{ url_for('user.logout') }}">Выйти</a></li>
+            </ul>
+          `;
+          document.body.appendChild(userMenuDropdown);
+        }
+        userMenuDropdown.classList.toggle('open');
+        const rect = userMenuBtn.getBoundingClientRect();
+        userMenuDropdown.style.position = 'absolute';
+        userMenuDropdown.style.top = (rect.bottom + window.scrollY + 8) + 'px';
+        userMenuDropdown.style.left = (rect.left + window.scrollX - 80) + 'px';
+        userMenuDropdown.style.zIndex = 9999;
+      });
+      document.addEventListener('click', function(e) {
+        if (userMenuDropdown && !userMenuDropdown.contains(e.target) && e.target !== userMenuBtn) {
+          userMenuDropdown.classList.remove('open');
+        }
+      });
+    }
+  });
+  </script>
+  <style>
+  .header-mobile-nav {
+    display: none;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    border-bottom: 1px solid #eee;
+    animation: fadeIn 0.2s;
+    padding-top: 8px;
+    padding-bottom: 16px;
+  }
+  .header-mobile-nav.open {
+    display: block !important;
+  }
+  .header-mobile-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .header-mobile-nav ul li {
+    width: 100%;
+    border-bottom: 1px solid #f2f2f2;
+  }
+  .header-mobile-nav ul li:last-child {
+    border-bottom: none;
+  }
+  .header-mobile-nav ul li a {
+    display: block;
+    width: 100%;
+    padding: 14px 0;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #222;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    background: none;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .header-mobile-nav ul li a:active, .header-mobile-nav ul li a:focus, .header-mobile-nav ul li a:hover {
+    background: #f5f5f5;
+    color: #000;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .mobile-user-dropdown {
+    display: none;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    min-width: 140px;
+    padding: 8px 0;
+  }
+  .mobile-user-dropdown.open {
+    display: block;
+  }
+  .mobile-user-dropdown ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .mobile-user-dropdown ul li {
+    border-bottom: 1px solid #f2f2f2;
+  }
+  .mobile-user-dropdown ul li:last-child {
+    border-bottom: none;
+  }
+  .mobile-user-dropdown ul li a {
+    display: block;
+    padding: 12px 18px;
+    color: #222;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background 0.2s, color 0.2s;
+  }
+  .mobile-user-dropdown ul li a:hover {
+    background: #f5f5f5;
+    color: #000;
+  }
+  .catalog-burger {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #222;
+    cursor: pointer;
+    margin: 12px 0 8px 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    z-index: 200;
+    position: relative;
+  }
+  .catalog-burger .catalog-icon {
+    display: inline-block;
+    width: 22px;
+    height: 22px;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+  .catalog-burger span {
+    display: none;
+  }
+  .mobile-catalog-nav {
+    display: none;
+    background: #fff;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+    border-bottom: 1px solid #eee;
+    border-radius: 0 0 12px 12px;
+    animation: fadeIn 0.2s;
+    padding-top: 8px;
+    padding-bottom: 16px;
+  }
+  .mobile-catalog-nav.open {
+    display: block !important;
+  }
+  .mobile-catalog-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+  .mobile-catalog-nav ul li {
+    width: 100%;
+    border-bottom: 1px solid #f2f2f2;
+  }
+  .mobile-catalog-nav ul li:last-child {
+    border-bottom: none;
+  }
+  .mobile-catalog-nav ul li a {
+    display: block;
+    width: 100%;
+    padding: 14px 0;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #222;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    background: none;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+  .mobile-catalog-nav ul li a:active, .mobile-catalog-nav ul li a:focus, .mobile-catalog-nav ul li a:hover {
+    background: #f5f5f5;
+    color: #000;
+  }
+  @media (max-width: 576px) {
+    .header-desktop-wrapper {
+      display: none !important;
+    }
+  }
+  @media (min-width: 768px) {
+    .catalog-burger, .mobile-catalog-nav { display: none !important; }
+  }
+  </style>
 </div>

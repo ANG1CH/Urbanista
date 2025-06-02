@@ -207,3 +207,39 @@
     white-space: nowrap; /* Предотвращаем перенос текста кнопки */
     margin-top: 0px; /* Опускаем кнопку на 1 пиксель */
 }
+
+@media (max-width: 992px) {
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem 0;
+    }
+    .cart-item-image {
+        width: 100px;
+        height: 100px;
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+}
+@media (max-width: 576px) {
+    .cart-title {
+        font-size: 1.2rem;
+    }
+    .cart-item-image {
+        width: 60px;
+        height: 60px;
+    }
+    .cart-item-details h3 {
+        font-size: 1rem;
+    }
+}
+:root {
+    font-size: 16px;
+}
+.cart-title {
+    font-size: 2rem;
+}
+.cart-item-image {
+    width: 9.375rem;
+    height: 9.375rem;
+}

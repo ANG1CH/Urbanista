@@ -41,3 +41,35 @@
     object-fit: cover;
     object-position: center;
 }
+
+@media (max-width: 768px) {
+    .blog-image-container {
+        height: auto;
+        min-height: 180px;
+        width: 100vw;
+        max-width: 100vw;
+        margin-left: -4vw;
+    }
+    .blog-image {
+        width: 100vw;
+        height: auto;
+        object-fit: cover;
+        object-position: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .blog-image-container {
+        height: auto;
+        min-height: 120px;
+        width: 100vw;
+        max-width: 100vw;
+        margin-left: -2vw;
+    }
+    .blog-image {
+        width: 100vw;
+        height: auto;
+        object-fit: cover;
+        object-position: center;
+    }
+}

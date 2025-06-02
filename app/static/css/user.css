@@ -75,3 +75,43 @@
     font-weight: 500;
     color: #1f2937;
 }
+
+@media (max-width: 992px) {
+    .profile-container {
+        max-width: 95vw;
+        padding: 1rem;
+    }
+    .profile-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-bottom: 0.5rem;
+    }
+    .profile-avatar {
+        width: 70px;
+        height: 70px;
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+}
+@media (max-width: 576px) {
+    .profile-container {
+        padding: 0.5rem;
+    }
+    .profile-header {
+        padding-bottom: 0.25rem;
+    }
+    .profile-name {
+        font-size: 1.1rem;
+    }
+}
+
+:root {
+    font-size: 16px;
+}
+.profile-avatar {
+    width: 6.25rem;
+    height: 6.25rem;
+}
+.profile-name {
+    font-size: 1.5rem;
+}

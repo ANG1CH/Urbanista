@@ -29,9 +29,13 @@ body {
 }
 
 .header__img {
-    display: block;
-    width: 110px;
-    height: auto;
+    align-self: center;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: 20px;
+    max-height: 30px;
+    width: auto;
+    object-fit: contain;
 }
 
 .content {
@@ -161,16 +165,19 @@ h6 {
 }
 
 .center-text {
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    font-size: 24px;
-    word-wrap: break-word;
-    white-space: normal;
-    max-width: 50%;
+    position: static;
+    width: 100%; /* исправлено с 100vw */
+    max-width: 100vw;
     color: white;
+    font-size: 10px !important;
+    padding: 0 4vw;
+    text-align: center;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    float: none;
+    margin-top: -150px;
 }
 
 .profile-container {
@@ -512,16 +519,19 @@ p, span, a, li, button, input, textarea, select, label {
 
 .cart-item-actions {
     margin-left: 20px;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    align-self: center;
 }
 
 .remove-btn {
     color: #dc3545;
     font-size: 16px;
     transition: all 0.3s ease;
-}
-
-.remove-btn:hover {
-    color: #c82333;
+    width: auto;
+    text-align: right;
 }
 
 .cart-summary {
@@ -577,4 +587,382 @@ p, span, a, li, button, input, textarea, select, label {
 .empty-cart p {
     color: #6c757d;
     margin-bottom: 20px;
+}
+
+/* --- Десктопный хедер: выравнивание навигации по центру --- */
+@media (min-width: 992px) {
+  .header-desktop-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .header-desktop-wrapper > .d-flex {
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    width: 100%;
+    min-height: 60px;
+  }
+  .header-desktop-wrapper > .d-flex > .d-flex.align-items-center {
+    grid-column: 1 / 2;
+    justify-content: flex-start;
+    align-items: center !important;
+  }
+  .header-desktop-wrapper > .d-flex > #main-nav {
+    grid-column: 2 / 3;
+    justify-content: center !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    align-items: center;
+    gap: 24px;
+  }
+  .header-desktop-wrapper > .d-flex > #user-nav {
+    grid-column: 3 / 4;
+    justify-content: flex-end;
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+  }
+  .header-desktop-wrapper .dropdown.text-end {
+    margin-right: 0 !important;
+  }
+}
+
+/* ====== Адаптивная верстка ====== */
+@media (max-width: 1200px) {
+    .content {
+        max-width: 1000px;
+        padding: 32px 16px;
+    }
+    .profile-container {
+        padding: 1.5rem 0;
+    }
+}
+@media (max-width: 992px) {
+    .content {
+        max-width: 750px;
+        padding: 24px 10px;
+    }
+    .profile-header, .update-profile-container {
+        padding: 1.5rem;
+    }
+    .profile-avatar {
+        width: 100px;
+        height: 100px;
+        font-size: 2.5rem;
+    }
+    .left-image img, .right-image img {
+        width: 350px;
+    }
+}
+@media (max-width: 768px) {
+    .content {
+        max-width: 100vw;
+        padding: 16px 4vw;
+    }
+    .header {
+        padding: 12px 4vw;
+    }
+    .profile-header, .update-profile-container {
+        padding: 1rem;
+    }
+    .profile-avatar {
+        width: 70px;
+        height: 70px;
+        font-size: 1.5rem;
+    }
+    .profile-info {
+        grid-template-columns: 1fr;
+    }
+    .content-grid {
+        grid-template-columns: 1fr;
+    }
+    .left-image img, .right-image img {
+        width: 100vw;
+        max-width: 100%;
+        margin-left: 0;
+        margin-top: 30px;
+    }
+    .left-image, .right-image {
+        float: none;
+        margin-left: 0;
+        margin-top: 48px;
+    }
+    .left-image img, .right-image img {
+        width: 100vw;
+        height: auto;
+    }
+
+    .left-image, .right-image {
+        float: none;
+    }
+
+    .right-text {
+        font-size: 18px;
+        max-width: 90vw;
+        left: 32%;
+        top: 30%;
+        transform: translate(-50%, -50%);
+    }
+
+    .left-text {
+        font-size: 18px;
+        max-width: 90vw;
+        left: 65%;
+        top: 19%;
+        transform: translate(-50%, -50%);
+    }
+
+    .center-text {
+        position: static;
+        width: 100%; /* исправлено с 100vw */
+        max-width: 100vw;
+        color: black;
+        font-size: 10px !important;
+        padding: 0 4vw;
+        text-align: center;
+        box-sizing: border-box;
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+        float: none;
+        margin-top: 40px;
+    }
+}
+@media (max-width: 576px) {
+    /* Полностью скрываем старый хедер */
+    .header .d-flex {
+        display: none !important;
+    }
+
+    .header-mobile-wrapper {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 8px 8px;
+        background: #fff;
+        border: none;
+        min-height: 56px;
+        z-index: 100;
+        position: sticky;
+        top: 0;
+        left: 0;
+    }
+
+    /* Стили для остальных мобильных элементов */
+    .burger {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 36px;
+        height: 36px;
+        background: none;
+        border: none;
+        position: relative;
+        z-index: 200;
+        margin-left: 0;
+        margin-right: 8px;
+        cursor: pointer;
+        flex: 0 0 36px;
+        visibility: visible !important;
+    }
+    .burger span {
+        display: block;
+        width: 24px;
+        height: 3px;
+        background: #222;
+        border-radius: 2px;
+        position: relative;
+        transition: all 0.3s;
+    }
+    .burger span::before,
+    .burger span::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 24px;
+        height: 3px;
+        background: #222;
+        border-radius: 2px;
+        transition: all 0.3s;
+    }
+    .burger span::before {
+        top: -8px;
+    }
+    .burger span::after {
+        top: 8px;
+    }
+    .burger.open span {
+        background: transparent;
+    }
+    .burger.open span::before {
+        transform: translateY(8px) rotate(45deg);
+    }
+    .burger.open span::after {
+        transform: translateY(-8px) rotate(-45deg);
+    }
+    .header-mobile-actions {
+        display: flex !important;
+        align-items: center;
+        gap: 10px;
+        flex: 0 0 auto;
+        margin-left: 8px;
+    }
+    .header-mobile-actions a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        color: #222;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+    }
+    .header-mobile-actions a i {
+        font-size: 22px;
+    }
+    .header-mobile-nav {
+        display: none;
+        position: absolute;
+        top: 56px;
+        left: 0;
+        width: 100vw;
+        background: #fff;
+        box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+        z-index: 150;
+        padding-bottom: 16px;
+        border-bottom: 1px solid #eee;
+        animation: fadeIn 0.2s;
+    }
+    .header-mobile-nav.open {
+        display: block !important;
+    }
+    .header-mobile-nav ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+    }
+    .header-mobile-nav ul li {
+        width: 100vw;
+        border-bottom: 1px solid #f2f2f2;
+    }
+    .header-mobile-nav ul li:last-child {
+        border-bottom: none;
+    }
+    .header-mobile-nav ul li a {
+        display: block;
+        width: 100vw;
+        padding: 14px 0;
+        text-align: center;
+        font-size: 1.1rem;
+        color: #222;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        background: none;
+        text-decoration: none;
+        transition: background 0.2s, color 0.2s;
+    }
+    .header-mobile-nav ul li a:active, .header-mobile-nav ul li a:focus, .header-mobile-nav ul li a:hover {
+        background: #f5f5f5;
+        color: #000;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    /* Скрыть старый header и nav только если они не внутри .header-desktop-wrapper */
+    .header > .d-flex:not(.header-desktop-wrapper),
+    .header nav:not(.header-desktop-wrapper nav),
+    .header .nav:not(.header-desktop-wrapper .nav),
+    .header > ul:not(.header-desktop-wrapper ul),
+    .header > .col-md-3:not(.header-desktop-wrapper .col-md-3) {
+        display: none !important;
+    }
+}
+@media (min-width: 577px) {
+    /* Скрываем мобильный хедер */
+    .header-mobile-wrapper,
+    .header-mobile-nav,
+    .header-mobile-divider {
+        display: none !important;
+    }
+    
+    /* Восстанавливаем десктопный хедер */
+    .header .d-flex {
+        display: flex !important;
+    }
+
+    .header {
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1346px;
+        margin: 0 auto;
+        padding: 0 15px;
+    }
+}
+
+/* ====== Перевод px в rem для основных элементов ====== */
+:root {
+    font-size: 16px;
+}
+.header {
+    padding: 1.25rem;
+}
+.content {
+    padding: 2.5rem 1.25rem;
+}
+.card-content {
+    padding: 1.25rem;
+}
+.cart-title {
+    font-size: 2rem;
+}
+.cart-item {
+    padding: 1.25rem;
+}
+.cart-item-image {
+    width: 6.25rem;
+    height: 6.25rem;
+    margin-right: 1.25rem;
+}
+@media (max-width: 576px) {
+  .container {
+    background: none !important;
+    border: none !important;
+    min-height: unset !important;
+    display: block !important;
+  }
+  .header {
+    background: #fff !important;
+    border: none !important;
+    min-height: unset !important;
+    display: block !important;
+  }
+  .cart-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 12px;
+  }
+  .cart-item-image {
+    margin: 0 12px 0 0;
+    width: 80px;
+    height: 80px;
+  }
+  .cart-item-actions {
+    margin-left: 12px;
+  }
+}
+@media (min-width: 769px) {
+  .left-image, .right-image {
+    margin-top: 80px;
+  }
 }

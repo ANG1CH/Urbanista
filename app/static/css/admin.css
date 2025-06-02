@@ -8,9 +8,25 @@
 .table-hover tbody tr:hover {
     background-color: rgba(0,0,0,0.03);
 }
+:root {
+    font-size: 16px;
+}
 .product-img {
-    width: 150px;
-    height: 150px;
+    width: 9.375rem;
+    height: 9.375rem;
     object-fit: cover;
     border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .product-img {
+        width: 80px;
+        height: 80px;
+    }
+}
+@media (max-width: 576px) {
+    .product-img {
+        width: 48px;
+        height: 48px;
+    }
 }

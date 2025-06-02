@@ -1,4 +1,4 @@
-<div class="col-md-3">
+<div class="col-md-3 d-none d-md-block" id="sidebar-desktop">
     <h2 class="text-left mb-3">Каталог</h2>
         
     <ul class="list-group list-unstyled">
@@ -84,3 +84,17 @@
         </li>
     </ul>
 </div>
+<!-- Мобильная кнопка и меню каталога -->
+<div class="d-md-none">
+    <button class="catalog-burger" id="catalog-burger" aria-label="Открыть каталог">
+      <span class="catalog-icon">
+        <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="5" width="16" height="2.5" rx="1.2" fill="#222"/>
+          <rect x="3" y="9.25" width="16" height="2.5" rx="1.2" fill="#222"/>
+          <rect x="3" y="13.5" width="16" height="2.5" rx="1.2" fill="#222"/>
+        </svg>
+      </span>
+      Каталог
+    </button>
+</div>
+<!-- Каталог для мобильного, будет вставляться через JS -->
