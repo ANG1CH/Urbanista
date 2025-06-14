@@ -149,6 +149,20 @@
     color: white;
 }
 
+@media (max-width: 1290px) {
+    .products-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+    .product-wrap {
+        max-width: 48vw;
+        min-width: 220px;
+        font-size: 12px;
+    }
+    .product-item img {
+        height: 200px;
+    }
+}
 @media (max-width: 992px) {
     .product-wrap {
         width: 45vw;

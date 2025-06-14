@@ -24,6 +24,11 @@ def create_app(config_class=Config):
     app.register_blueprint(favorite_blueprint)
     app.register_blueprint(cart)
 
+    # Создание папки для загрузки файлов, если её нет
+    import os
+    upload_folder = os.path.join(app.static_folder, 'upload')
+    os.makedirs(upload_folder, exist_ok=True)
+    
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)

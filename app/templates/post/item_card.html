@@ -17,7 +17,11 @@
 
         {% block content %}
         <div class="product-detail">
-            <img class="product-image" src="{{ url_for('static', filename='upload/' + post.picture) }}" alt="product_picture">
+            {% if post.picture %}
+                <img class="product-image" src="{{ url_for('static', filename='upload/' + post.picture) }}" alt="product_picture">
+            {% else %}
+                <img class="product-image" src="{{ url_for('static', filename='img/no-image.png') }}" alt="no_image">
+            {% endif %}
             <div class="product-info">
                 <h2>{{ post.name }}</h2>
                 <h2>₽ {{ post.price }}</h2>

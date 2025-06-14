@@ -27,7 +27,9 @@
                 </div>
                 <div class="info-item">
                     <i class="fas fa-calendar-alt"></i>
-                    <p>Дата регистрации: {{ current_user.date.strftime('%d.%m.%Y') }}</p>
+                    {% if current_user.is_authenticated and current_user.date %}
+                        <p>Дата регистрации: {{ current_user.date.strftime('%d.%m.%Y') }}</p>
+                    {% endif %}
                 </div>
                 <div class="info-item">
                     <i class="fas fa-user-tag"></i>

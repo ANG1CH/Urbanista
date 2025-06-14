@@ -3,7 +3,11 @@
         {% for post in posts %}
             <div class="product-wrap col-md-4 col-sm-6 mb-3">
                 <div class="product-item">
-                    <img src="{{ url_for('static', filename='upload/' + post.picture) }}" alt="product_picture">
+                    {% if post.picture %}
+                        <img src="{{ url_for('static', filename='upload/' + post.picture) }}" alt="product_picture">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='img/no-image.png') }}" alt="no_image">
+                    {% endif %}
                     <div class="product-buttons">
                         <a type="button" class="button" data-post-id="{{ post.id }}" data-csrf-token="{{ csrf_token() }}">
                             В корзину
